@@ -3,6 +3,7 @@ package codes.royal.httpcall
 import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.widget.Toast
@@ -32,6 +33,13 @@ class StopActivity: AppCompatActivity() {
 
         // Initialize a new Intent instance
         val intent = Intent(applicationContext, serviceClass)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            this.finishAffinity()
+        } else{
+            this.finish()
+            System.exit(0)
+        }
 
         if (isServiceRunning(serviceClass)) {
             Toast.makeText(this, "Stopping Service", Toast.LENGTH_SHORT).show()

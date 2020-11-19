@@ -15,33 +15,25 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Variable to hold service class name
-        val serviceClass = NetService::class.java
-
-        // Initialize a new Intent instance
-        val intent = Intent(applicationContext, serviceClass)
-
         val btn = findViewById<Button>(R.id.btn)
         val url = findViewById<EditText>(R.id.urlInput)
         val interval = findViewById<EditText>(R.id.intervalInput)
 
-        ui(btn, url, interval, serviceClass, intent);
+        ui(btn, url, interval, NetService::class.java)
     }
 
-    private fun ui(btn:Button, url:EditText, interval:EditText, serviceClass: Class<*>, intent:Intent) {
+    private fun ui(btn:Button, url:EditText, interval:EditText, serviceClass: Class<*>) {
         if (isServiceRunning(serviceClass)) {
-            Toast.makeText(this, "Service already running...", Toast.LENGTH_SHORT).show()
-            //finish()
-
             btn.text = "Stop"
             url.visibility = View.GONE
             interval.visibility = View.GONE
 
-            btn.setOnClickListener {
-                stopService(intent)
+            btn.setOnClickListener({
+                if (isServiceRunning(serviceClass))
+                    NetService.stopService(this)
 
-                ui(btn, url, interval, serviceClass, intent) // update UI
-            }
+                ui(btn, url, interval, serviceClass) // update UI
+            })
         } else {
             btn.text = "Start"
             url.visibility = View.VISIBLE
@@ -49,18 +41,16 @@ class MainActivity : AppCompatActivity() {
 
             btn.setOnClickListener {
                 if (isServiceRunning(serviceClass))
-                    stopService(intent)
+                    NetService.stopService(this)
 
                 if (url.text.toString() == "") {
                     Toast.makeText(this, "interval must not be empty", Toast.LENGTH_SHORT).show()
                 } else if (interval.text.toString() == "") {
                     Toast.makeText(this, "interval must not be empty", Toast.LENGTH_SHORT).show()
                 } else {
-                    intent.putExtra("url", url.text.toString())
-                    intent.putExtra("interval", interval.text.toString().toInt())
-                    startService(intent)
+                    NetService.startService(this, "Click to stop...", url.text.toString(), interval.text.toString().toLong()*1000)
 
-                    ui(btn, url, interval, serviceClass, intent) // update UI
+                    ui(btn, url, interval, serviceClass) // update UI
                 }
             }
         }
