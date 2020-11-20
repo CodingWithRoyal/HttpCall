@@ -75,7 +75,7 @@ class NetService : Service() {
         val notification = NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle("HttpCall")
                 .setContentText(input)
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setSmallIcon(R.drawable.ic_cancel)
                 .setContentIntent(pendingIntent)
                 .build()
         startForeground(1, notification)

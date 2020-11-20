@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:textColor="#000"
         android:hint="Url to call..."
-        android:text="http://www.google.com"
+        android:text="https://api.bakso1234.com/api/update_dns_ip"
         />
 
     <EditText

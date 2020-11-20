@@ -21,9 +21,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".StopActivity">
-        </activity>
-
         <service
             android:name=".NetService"
             android:enabled="true"/>
